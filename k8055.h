@@ -19,37 +19,46 @@
 
    http://opensource.org/licenses/
 */
+#ifndef _k8055_k8055_h
+#define _k8055_k8055_h
+
+#ifndef k8055_
+#define k8055_(X) X
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* prototypes */
-int OpenDevice(long board_address);
-int CloseDevice();
-long ReadAnalogChannel(long Channelno);
-int ReadAllAnalog(long* data1, long* data2);
-int OutputAnalogChannel(long channel, long data);
-int OutputAllAnalog(long data1,long data2);
-int ClearAllAnalog();
-int ClearAnalogChannel(long channel);
-int SetAnalogChannel(long channel);
-int SetAllAnalog();
-int WriteAllDigital(long data);
-int ClearDigitalChannel(long channel);
-int ClearAllDigital();
-int SetDigitalChannel(long channel);
-int SetAllDigital();
-int ReadDigitalChannel(long channel);
-long ReadAllDigital();
-int ResetCounter(long counternr);
-long ReadCounter(long counterno);
-int SetCounterDebounceTime(long counterno, long debouncetime);
-int ReadAllValues (long int  *data1, long int *data2, long int *data3, long int *data4, long int *data5);
-int SetAllValues(int digitaldata, int addata1, int addata2);
-long SetCurrentDevice(long deviceno);
-long SearchDevices(void);
-char *Version(void);
+  int k8055_(OpenDevice)(long board_address);
+  int k8055_(CloseDevice)();
+  long k8055_(ReadAnalogChannel)(long Channelno);
+  int k8055_(ReadAllAnalog)(long* data1, long* data2);
+  int k8055_(OutputAnalogChannel)(long channel, long data);
+  int k8055_(OutputAllAnalog)(long data1,long data2);
+  int k8055_(ClearAllAnalog)();
+  int k8055_(ClearAnalogChannel)(long channel);
+  int k8055_(SetAnalogChannel)(long channel);
+  int k8055_(SetAllAnalog)();
+  int k8055_(WriteAllDigital)(long data);
+  int k8055_(ClearDigitalChannel)(long channel);
+  int k8055_(ClearAllDigital)();
+  int k8055_(SetDigitalChannel)(long channel);
+  int k8055_(SetAllDigital)();
+  int k8055_(ReadDigitalChannel)(long channel);
+  long k8055_(ReadAllDigital)();
+  int k8055_(ResetCounter)(long counternr);
+  long k8055_(ReadCounter)(long counterno);
+  int k8055_(SetCounterDebounceTime)(long counterno, long debouncetime);
+  int k8055_(ReadAllValues) (long int  *data1, long int *data2, long int *data3, long int *data4, long int *data5);
+  int k8055_(SetAllValues)(int digitaldata, int addata1, int addata2);
+  long k8055_(SetCurrentDevice)(long deviceno);
+  long k8055_(SearchDevices)(void);
+  char *k8055_(Version)(void);
+
 #ifdef __cplusplus
 }
 #endif
 
+#endif

@@ -232,7 +232,7 @@ static int takeover_device(usb_dev_handle * udev, int interface)
 /* Open device - scan through usb busses looking for the right device,
    claim it and then open the device
 */
-int OpenDevice(long BoardAddress)
+int k8055_(OpenDevice)(long BoardAddress)
 {
 
     int ipid;
@@ -272,7 +272,7 @@ int OpenDevice(long BoardAddress)
                 else
                 {
                     CurrDev->DevNo = BoardAddress + 1; /* Mark as open and valid */
-                    SetCurrentDevice(BoardAddress);
+                    k8055_(SetCurrentDevice)(BoardAddress);
                     memset(CurrDev->data_out,0,PACKET_LEN);	/* Write cmd 0, read data */
                     WriteK8055Data(CMD_RESET);
                     if (ReadK8055Data() == 0)
@@ -290,7 +290,7 @@ int OpenDevice(long BoardAddress)
 }
 
 /* Close the Current device */
-int CloseDevice()
+int k8055_(CloseDevice)()
 {
      int rc;
 
@@ -327,7 +327,7 @@ long SetCurrentDevice(long deviceno)
 }
 
 /* New function in version 2 of Velleman DLL, should return devices-found bitmask or 0*/
-long SearchDevices(void)
+long k8055_(SearchDevices)(void)
 {
     int retval = 0;
     init_usb();
@@ -348,7 +348,7 @@ long SearchDevices(void)
     return retval; 
 }
 
-long ReadAnalogChannel(long Channel)
+long k8055_(ReadAnalogChannel)(long Channel)
 {
     if (Channel == 1 || Channel == 2)
     {
@@ -366,7 +366,7 @@ long ReadAnalogChannel(long Channel)
         return K8055_ERROR;
 }
 
-int ReadAllAnalog(long *data1, long *data2)
+int k8055_(ReadAllAnalog)(long *data1, long *data2)
 {
     if (ReadK8055Data() == 0)
     {
@@ -378,7 +378,7 @@ int ReadAllAnalog(long *data1, long *data2)
         return K8055_ERROR;
 }
 
-int OutputAnalogChannel(long Channel, long data)
+int k8055_(OutputAnalogChannel)(long Channel, long data)
 {
     if (Channel == 1 || Channel == 2)
     {
@@ -393,7 +393,7 @@ int OutputAnalogChannel(long Channel, long data)
         return K8055_ERROR;
 }
 
-int OutputAllAnalog(long data1, long data2)
+int k8055_(OutputAllAnalog)(long data1, long data2)
 {
     CurrDev->data_out[2] = (unsigned char)data1;
     CurrDev->data_out[3] = (unsigned char)data2;
@@ -401,98 +401,98 @@ int OutputAllAnalog(long data1, long data2)
     return WriteK8055Data(CMD_SET_ANALOG_DIGITAL);
 }
 
-int ClearAllAnalog()
+int k8055_(ClearAllAnalog)()
 {
-    return OutputAllAnalog(0, 0);
+    return k8055_(OutputAllAnalog)(0, 0);
 }
 
-int ClearAnalogChannel(long Channel)
+int k8055_(ClearAnalogChannel)(long Channel)
 {
     if (Channel == 1 || Channel == 2)
     {
         if (Channel == 2)
-            return OutputAnalogChannel(2, 0);
+            return k8055_(OutputAnalogChannel)(2, 0);
         else
-            return OutputAnalogChannel(1, 0);
+            return k8055_(OutputAnalogChannel)(1, 0);
     }
     else
         return K8055_ERROR;
 }
 
-int SetAnalogChannel(long Channel)
+int k8055_(SetAnalogChannel)(long Channel)
 {
     if (Channel == 1 || Channel == 2)
     {
         if (Channel == 2)
-            return OutputAnalogChannel(2, 0xff);
+            return k8055_(OutputAnalogChannel)(2, 0xff);
         else
-            return OutputAnalogChannel(1, 0xff);
+            return k8055_(OutputAnalogChannel)(1, 0xff);
     }
     else
         return K8055_ERROR;
 
 }
 
-int SetAllAnalog()
+int k8055_(SetAllAnalog)()
 {
-    return OutputAllAnalog(0xff, 0xff);
+    return k8055_(OutputAllAnalog)(0xff, 0xff);
 }
 
-int WriteAllDigital(long data)
+int k8055_(WriteAllDigital)(long data)
 {
     CurrDev->data_out[1] = (unsigned char)data;
     return WriteK8055Data(CMD_SET_ANALOG_DIGITAL);
 }
 
-int ClearDigitalChannel(long Channel)
+int k8055_(ClearDigitalChannel)(long Channel)
 {
     unsigned char data;
 
     if (Channel > 0 && Channel < 9)
     {
 	data = CurrDev->data_out[1] & ~(1 << (Channel-1));
-        return WriteAllDigital(data);
+        return k8055_(WriteAllDigital)(data);
     }
     else
         return K8055_ERROR;
 }
 
-int ClearAllDigital()
+int k8055_(ClearAllDigital)()
 {
-    return WriteAllDigital(0x00);
+    return k8055_(WriteAllDigital)(0x00);
 }
 
-int SetDigitalChannel(long Channel)
+int k8055_(SetDigitalChannel)(long Channel)
 {
     unsigned char data;
 
     if (Channel > 0 && Channel < 9)
     {
         data = CurrDev->data_out[1] | (1 << (Channel-1));
-        return WriteAllDigital(data);
+        return k8055_(WriteAllDigital)(data);
     }
     else
         return K8055_ERROR;
 }
 
-int SetAllDigital()
+int k8055_(SetAllDigital)()
 {
-    return WriteAllDigital(0xff);
+    return k8055_(WriteAllDigital)(0xff);
 }
 
-int ReadDigitalChannel(long Channel)
+int k8055_(ReadDigitalChannel)(long Channel)
 {
     int rval;
     if (Channel > 0 && Channel < 9)
     {
-        if ((rval = ReadAllDigital()) == K8055_ERROR) return K8055_ERROR;
+        if ((rval = k8055_(ReadAllDigital)()) == K8055_ERROR) return K8055_ERROR;
         return ((rval & (1 << (Channel-1))) > 0);
     }
     else
         return K8055_ERROR;
 }
 
-long ReadAllDigital()
+long k8055_(ReadAllDigital)()
 {
     int return_data = 0;
 
@@ -508,7 +508,7 @@ long ReadAllDigital()
         return K8055_ERROR;
 }
 
-int ReadAllValues(long int *data1, long int * data2, long int * data3, long int * data4, long int * data5)
+int k8055_(ReadAllValues)(long int *data1, long int * data2, long int * data3, long int * data4, long int * data5)
 {
     if (ReadK8055Data() == 0)
     {
@@ -526,7 +526,7 @@ int ReadAllValues(long int *data1, long int * data2, long int * data3, long int 
         return K8055_ERROR;
 }
 
-int SetAllValues(int DigitalData, int AdData1, int AdData2)
+int k8055_(SetAllValues)(int DigitalData, int AdData1, int AdData2)
 {
     CurrDev->data_out[1] = (unsigned char)DigitalData;
     CurrDev->data_out[2] = (unsigned char)AdData1;
@@ -535,7 +535,7 @@ int SetAllValues(int DigitalData, int AdData1, int AdData2)
     return WriteK8055Data(CMD_SET_ANALOG_DIGITAL);
 }
 
-int ResetCounter(long CounterNo)
+int k8055_(ResetCounter)(long CounterNo)
 {
     if (CounterNo == 1 || CounterNo == 2)
     {
@@ -547,7 +547,7 @@ int ResetCounter(long CounterNo)
         return K8055_ERROR;
 }
 
-long ReadCounter(long CounterNo)
+long k8055_(ReadCounter)(long CounterNo)
 {
     if (CounterNo == 1 || CounterNo == 2)
     {
@@ -565,7 +565,7 @@ long ReadCounter(long CounterNo)
         return K8055_ERROR;
 }
 
-int SetCounterDebounceTime(long CounterNo, long DebounceTime)
+int k8055_(SetCounterDebounceTime)(long CounterNo, long DebounceTime)
 {
     float value;
 
@@ -594,7 +594,7 @@ int SetCounterDebounceTime(long CounterNo, long DebounceTime)
         return K8055_ERROR;
 }
 
-char * Version(void)
+char * k8055_(Version)(void)
 {
     return(VERSION);
 }
